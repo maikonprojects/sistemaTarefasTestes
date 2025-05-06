@@ -71,6 +71,17 @@ class TarefaServicoTest {
 
     @Test
     void buscarId() {
+
+        when(repositorio.findById(1)).thenReturn(Optional.of(task));
+
+        Optional<Task> task = servico.buscarId(1);
+
+        assertTrue(task.isPresent());
+        assertEquals("Alo", task.get().getTitle());
+        verify(repositorio, times(1)).findById(1);
+
+
+
     }
 
     @Test
@@ -103,5 +114,13 @@ class TarefaServicoTest {
 
     @Test
     void deletarPorId() {
+        when(repositorio.findById(1)).thenReturn(Optional.of(task));
+
+        servico.deletarPorId(1);
+        verify(repositorio,times(1)).deleteById(1);
+
+
     }
+
+
 }

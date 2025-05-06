@@ -51,6 +51,7 @@ public class TarefaServico {
     public void deletarPorId(Integer id){
         Task tarefa = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
         repositorio.deleteById(id);
+
     }
 
 
