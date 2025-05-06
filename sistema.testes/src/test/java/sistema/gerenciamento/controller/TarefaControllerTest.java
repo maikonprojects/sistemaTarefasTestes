@@ -55,7 +55,19 @@ class TarefaControllerTest {
     }
 
     @Test
-    void listar() {
+    void listar() throws Exception{
+        Task task = new Task();
+
+        task.setTitle("Adeus");
+        task.setDescription("AAAAAAAAA");
+        task.setStatus(Status.CONCLUIDA);
+        servico.cadastrarTarefa(task);
+
+
+        mockMvc.perform(get("/tarefa"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Adeus"));
+
     }
 
     @Test
