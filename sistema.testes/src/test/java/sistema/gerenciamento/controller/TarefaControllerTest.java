@@ -71,7 +71,19 @@ class TarefaControllerTest {
     }
 
     @Test
-    void buscarPorId() {
+    void buscarPorId() throws Exception{
+
+        Task task = new Task();
+
+        task.setTitle("Adeus");
+        task.setDescription("AAAAAAAAA");
+        task.setStatus(Status.CONCLUIDA);
+
+        servico.cadastrarTarefa(task);
+
+        mockMvc.perform(get("/tarefa/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("Adeus"));
     }
 
     @Test
