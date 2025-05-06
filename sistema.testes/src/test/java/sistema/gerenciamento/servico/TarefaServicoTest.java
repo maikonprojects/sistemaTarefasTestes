@@ -3,7 +3,6 @@ package sistema.gerenciamento.servico;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.engine.TestExecutionResult;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,7 +26,7 @@ class TarefaServicoTest {
     private Task task;
 
     @InjectMocks
-    private TarefaServico servico;
+    private TaskServico servico;
 
 
     @BeforeEach

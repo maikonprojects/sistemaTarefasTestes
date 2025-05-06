@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sistema.gerenciamento.modelo.Task;
-import sistema.gerenciamento.servico.TarefaServico;
+import sistema.gerenciamento.servico.TaskServico;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class TarefaController {
 
     @Autowired
-    TarefaServico servico;
+    TaskServico servico;
 
     @PostMapping
     public ResponseEntity<Task> cadastrar(@RequestBody Task dados){
