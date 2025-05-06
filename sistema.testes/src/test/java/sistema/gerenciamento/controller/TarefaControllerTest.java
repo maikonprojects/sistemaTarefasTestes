@@ -1,6 +1,7 @@
 package sistema.gerenciamento.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -123,8 +124,5 @@ class TarefaControllerTest {
 
         mockMvc.perform(delete("/tarefa/1"))
                 .andExpect(status().isOk());
-
-
-
     }
 }
