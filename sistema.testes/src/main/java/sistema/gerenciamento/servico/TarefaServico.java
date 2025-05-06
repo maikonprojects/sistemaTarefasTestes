@@ -1,9 +1,9 @@
 package sistema.gerenciamento.servico;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import sistema.gerenciamento.modelo.Tarefa;
+import sistema.gerenciamento.modelo.Status;
+import sistema.gerenciamento.modelo.Task;
 import sistema.gerenciamento.repositorio.TarefaRepositorio;
 
 import java.util.List;
@@ -15,26 +15,33 @@ public class TarefaServico {
     @Autowired
     TarefaRepositorio repositorio;
 
-    public Tarefa cadastrarTarefa(Tarefa dados){
+    public Task cadastrarTarefa(Task dados){
+
+        Status status = dados.getStatus();
+        if (status != Status.CONCLUIDA && status != Status.EM_ANDAMENTO && status != Status.PENDENTE) {
+            throw new RuntimeException("Status não está correto");
+        }
+
         return repositorio.save(dados);
+
     }
 
-    public List<Tarefa> listar() {
+    public List<Task> listar() {
         return repositorio.findAll();
     }
 
-    public Optional<Tarefa> buscarId(Integer id){
-        Optional<Tarefa> tarefa = repositorio.findById(id);
+    public Optional<Task> buscarId(Integer id){
+        Optional<Task> tarefa = repositorio.findById(id);
         return tarefa;
     }
 
-    public Tarefa atualizarId(Integer id, Tarefa tarefa){
+    public Task atualizarId(Integer id, Task tarefa){
 
-           Tarefa tarefaEncontrada = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+           Task tarefaEncontrada = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
 
             tarefaEncontrada.setId(id);
-            tarefaEncontrada.setDescricao(tarefa.getDescricao());
-            tarefaEncontrada.setTitulo(tarefa.getTitulo());
+            tarefaEncontrada.setDescription(tarefa.getDescription());
+            tarefaEncontrada.setTitle(tarefa.getTitle());
             tarefaEncontrada.setStatus(tarefa.getStatus());
 
             return repositorio.save(tarefaEncontrada);
@@ -42,7 +49,7 @@ public class TarefaServico {
     }
 
     public void deletarPorId(Integer id){
-        Tarefa tarefa = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+        Task tarefa = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
         repositorio.deleteById(id);
     }
 
