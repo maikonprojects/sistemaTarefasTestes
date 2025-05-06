@@ -87,10 +87,44 @@ class TarefaControllerTest {
     }
 
     @Test
-    void atualizar() {
+    void atualizar() throws Exception{
+        Task task = new Task();
+
+        task.setTitle("Solutis");
+        task.setDescription("A");
+        task.setStatus(Status.CONCLUIDA);
+        servico.cadastrarTarefa(task);
+
+        Task taskAtualizada = new Task();
+        taskAtualizada.setId(1);
+        taskAtualizada.setTitle("Casa");
+        taskAtualizada.setDescription("Morar");
+        taskAtualizada.setStatus(Status.CONCLUIDA);
+
+
+        mockMvc.perform(put("/tarefa/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(taskAtualizada)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("Casa"))
+                .andExpect(jsonPath("$.description").value("Morar"));
+
     }
 
     @Test
-    void deletar() {
+    void deletar() throws Exception{
+        Task task = new Task();
+
+        task.setTitle("Solutis");
+        task.setDescription("A");
+        task.setStatus(Status.CONCLUIDA);
+        servico.cadastrarTarefa(task);
+
+
+        mockMvc.perform(delete("/tarefa/1"))
+                .andExpect(status().isOk());
+
+
+
     }
 }
