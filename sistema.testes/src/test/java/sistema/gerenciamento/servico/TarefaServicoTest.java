@@ -1,0 +1,75 @@
+package sistema.gerenciamento.servico;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.engine.TestExecutionResult;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import sistema.gerenciamento.modelo.Status;
+import sistema.gerenciamento.modelo.Task;
+import sistema.gerenciamento.repositorio.TarefaRepositorio;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class TarefaServicoTest {
+
+    @Mock
+    private TarefaRepositorio repositorio;
+
+    private Task task;
+
+    @InjectMocks
+    private TarefaServico servico;
+
+
+    @BeforeEach
+    void setUp(){
+        task = new Task();
+        task.setTitle("Alo");
+        task.setDescription("Ler novamente");
+        task.setStatus(Status.CONCLUIDA);
+
+
+    }
+
+    @Test
+    void cadastrarTarefa() {
+        Task entidadeSalva = new Task();
+        entidadeSalva.setId(1);
+        entidadeSalva.setTitle("Alo");
+        entidadeSalva.setDescription("Ler novamente");
+        entidadeSalva.setStatus(Status.CONCLUIDA);
+
+        when(repositorio.save(any(Task.class))).thenReturn(entidadeSalva);
+
+        Task eventoSalvo = servico.cadastrarTarefa(task);
+
+        assertNotNull(eventoSalvo);
+        assertEquals("Alo", eventoSalvo.getTitle());
+        assertEquals(1, eventoSalvo.getId());
+        assertEquals("Ler novamente", eventoSalvo.getDescription());
+        assertEquals(Status.CONCLUIDA, eventoSalvo.getStatus());
+        verify(repositorio, times(1)).save(any(Task.class));
+    }
+
+    @Test
+    void listar() {
+    }
+
+    @Test
+    void buscarId() {
+    }
+
+    @Test
+    void atualizarId() {
+    }
+
+    @Test
+    void deletarPorId() {
+    }
+}
