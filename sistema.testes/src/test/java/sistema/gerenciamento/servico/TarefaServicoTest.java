@@ -11,6 +11,9 @@ import sistema.gerenciamento.modelo.Status;
 import sistema.gerenciamento.modelo.Task;
 import sistema.gerenciamento.repositorio.TarefaRepositorio;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -33,8 +36,6 @@ class TarefaServicoTest {
         task.setTitle("Alo");
         task.setDescription("Ler novamente");
         task.setStatus(Status.CONCLUIDA);
-
-
     }
 
     @Test
@@ -59,6 +60,13 @@ class TarefaServicoTest {
 
     @Test
     void listar() {
+        when(repositorio.findAll()).thenReturn(Arrays.asList(task));
+
+        var evento = servico.listar();
+
+        assertEquals(1, evento.size());
+        assertEquals("Alo", evento.get(0).getTitle());
+        verify(repositorio, times(1)).findAll();
     }
 
     @Test
@@ -67,6 +75,30 @@ class TarefaServicoTest {
 
     @Test
     void atualizarId() {
+
+        Task tarefaExistente = new Task();
+        tarefaExistente.setId(1);
+        tarefaExistente.setTitle("Alo");
+        tarefaExistente.setDescription("Ler novamente");
+        tarefaExistente.setStatus(Status.CONCLUIDA);
+
+        Task novosDadosEtidade = new Task();
+        novosDadosEtidade.setId(1);
+        novosDadosEtidade.setTitle("Tchau");
+        novosDadosEtidade.setDescription("Ler novamente");
+        novosDadosEtidade.setStatus(Status.CONCLUIDA);
+
+        when(repositorio.findById(1)).thenReturn(Optional.of(tarefaExistente));
+        when(repositorio.save(any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Task eventoSalvo = servico.atualizarId(1, novosDadosEtidade);
+
+        assertNotNull(eventoSalvo);
+        assertEquals("Tchau", eventoSalvo.getTitle());
+        assertEquals(1, eventoSalvo.getId());
+        assertEquals("Ler novamente", eventoSalvo.getDescription());
+        assertEquals(Status.CONCLUIDA, eventoSalvo.getStatus());
+        verify(repositorio, times(1)).save(any(Task.class));
     }
 
     @Test
