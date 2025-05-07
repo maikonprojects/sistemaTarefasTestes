@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -120,13 +121,7 @@ class TarefaControllerTest {
 
     @Test
     void deletar() throws Exception{
-        Task task = new Task();
-
-        task.setTitle("Solutis");
-        task.setDescription("A");
-        task.setStatus(Status.CONCLUIDA);
-        servico.cadastrarTarefa(task);
-
+        doNothing().when(servico).deletarPorId(1);
 
         mockMvc.perform(delete("/tarefa/1"))
                 .andExpect(status().isOk());
